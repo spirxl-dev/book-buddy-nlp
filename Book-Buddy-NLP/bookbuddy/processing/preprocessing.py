@@ -1,11 +1,9 @@
-import re
-import string
-import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 import contractions
 
+# import nltk
 # nltk.download('wordnet')
 # nltk.download('punkt')
 # nltk.download('stopwords')
@@ -50,4 +48,3 @@ def pre_process_text(text: str) -> list:
     tokens = remove_stop_words(tokens)
     lemmatized_tokens = lemmatize_tokens(tokens)
     return lemmatized_tokens
-
