@@ -1,42 +1,53 @@
-# This module is responsible for text normalization and preprocessing to prepare user queries for NLP analysis.
 import re
+import string
+import nltk
 from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+from nltk.tokenize import word_tokenize
 import contractions
 
+# nltk.download('wordnet')
+# nltk.download('punkt')
+# nltk.download('stopwords')
 
-def normalise_case(text: str):
-    out = text.lower()
+
+def expand_contractions(text: str) -> str:
+    return contractions.fix(text)
+
+
+def strip_punctuation(text: str) -> str:
+    chars_to_remove = ".,':;!?\""
+    translation_table = text.maketrans("", "", chars_to_remove)
+    out = text.translate(translation_table)
     return out
 
 
-def remove_punctuation_and_special_chars(text: str):
-    # out = text.translate(str.maketrans("", "", string.punctuation))
-    out = re.sub("[^a-zA-Z\s]", "", text)
-    return out
+def normalise_case(text: str) -> str:
+    return text.lower()
 
 
-def remove_stop_words(text: str):
-    stopwords_dict = {word: 1 for word in stopwords.words("english")}
-    words = []
-    for word in text.split():
-        if word.lower() not in stopwords_dict:
-            words.append(word)
-    text = " ".join(words)
-    return text
+def tokenize_text(text: str) -> list:
+    return word_tokenize(text)
 
 
-def expand_contractions(text: str):
-    """Potentially a bit iffy"""
-    out = contractions.fix(text)
-    return out
-
-print(expand_contractions("yall shouldnt shit"))
+def remove_stop_words(tokens: list) -> list:
+    preserve_words = set(["not"])
+    stopwords_set = set(stopwords.words("english")) - preserve_words
+    return [token for token in tokens if token not in stopwords_set]
 
 
-def lemmatization(text: str):
-    pass
+def lemmatize_tokens(tokens: list) -> list:
+    lemmatizer = WordNetLemmatizer()
+    return [lemmatizer.lemmatize(token) for token in tokens]
 
 
-def pre_proccess_text(text: str):
+def pre_process_text(text: str) -> list:
     """ENTRY POINT"""
-    pass
+    text = expand_contractions(text)
+    text = strip_punctuation(text)
+    text = normalise_case(text)
+    tokens = tokenize_text(text)
+    tokens = remove_stop_words(tokens)
+    lemmatized_tokens = lemmatize_tokens(tokens)
+    return lemmatized_tokens
+
