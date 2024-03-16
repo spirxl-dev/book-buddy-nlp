@@ -6,7 +6,7 @@ import contractions
 # import nltk
 # nltk.download('wordnet')
 # nltk.download('punkt')
-# nltk.download('stopwords')
+# # nltk.download('stopwords')
 
 
 def expand_contractions(text: str) -> str:
@@ -39,7 +39,7 @@ def lemmatize_tokens(tokens: list) -> list:
     return [lemmatizer.lemmatize(token) for token in tokens]
 
 
-def pre_process_text(text: str) -> list:
+def process_text(text: str) -> list:
     """ENTRY POINT"""
     text = expand_contractions(text)
     text = strip_punctuation(text)
