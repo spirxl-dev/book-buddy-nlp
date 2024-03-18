@@ -9,16 +9,18 @@ import sys
 sys.path.append("...")
 
 
-GENRES = load_data_from_json("Book-Buddy-NLP/data/genres.json")
+GENRES: list = load_data_from_json("Book-Buddy-NLP/data/genres.json")
+AUTHORS: list = []
 
 nlp = spacy.load("en_core_web_sm")
 
 
 def classify_intent(preprocessed_tokens: list) -> str:
-    if any(token in GENRES for token in preprocessed_tokens):
-        return "genre_recommendation"  #  add support for author etc.
-    else:
-        return "unknown"
+    for token in preprocessed_tokens:
+        if token in GENRES:
+            return "genre_recommendation"
+        #  Add support for authors
+    return "unknown"
 
 
 def extract_details(preprocessed_tokens: list, detail_type: str = "genres") -> set:
@@ -30,7 +32,7 @@ def extract_details(preprocessed_tokens: list, detail_type: str = "genres") -> s
     return details
 
 
-def process_user_request(input_string: str) -> tuple[str, set]:
+def extract_intent(input_string: str) -> tuple[str, set]:
     """ENTRY POINT"""
     preprocessed_tokens = process_text(input_string)
     intent = classify_intent(preprocessed_tokens)
@@ -40,6 +42,7 @@ def process_user_request(input_string: str) -> tuple[str, set]:
 
 if __name__ == "__main__":
     input_string = "I'm looking for a sci-fi book with elements of romance and comedy."
-    identified_intent, details = process_user_request(input_string)
+    identified_intent, details = extract_intent(input_string)
     print(f"Identified Intent: {identified_intent}")
     print(f"Details (Genres): {details}")
+    print
