@@ -35,12 +35,20 @@ class DataProcessor:
     def remove_stop_words(tokens):
         preserve_words = {"not"}
         stopwords_set = set(stopwords.words("english")) - preserve_words
-        return [token for token in tokens if token not in stopwords_set]
+        result = []
+        for token in tokens:
+            if token not in stopwords_set:
+                result.append(token)
+        return result
 
     @staticmethod
     def lemmatize_tokens(tokens):
         lemmatizer = WordNetLemmatizer()
-        return [lemmatizer.lemmatize(token) for token in tokens]
+        result = []
+        for token in tokens:
+            lemmatized_token = lemmatizer.lemmatize(token)
+            result.append(lemmatized_token)
+        return result
 
     @staticmethod
     def process_text(text):
@@ -104,10 +112,10 @@ class CLIHandler:
 
 
 def main():
-    genres = DataProcessor.load_data_from_json("data/genres.json")
-    intent_recognizer = IntentRecogniser(genres)
-    cli_handler = CLIHandler(intent_recognizer)
-    cli_handler.run()
+    GENRES = DataProcessor.load_data_from_json("data/genres.json")
+    intent_recognizer = IntentRecogniser(GENRES)
+    cli= CLIHandler(intent_recognizer)
+    cli.run()
 
 
 if __name__ == "__main__":
