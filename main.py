@@ -1,14 +1,22 @@
 import json
+import subprocess
+import sys
+
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
-import spacy
-import spacy.cli
-spacy.cli.download("en_core_web_lg")
 import contractions
 from spellchecker import SpellChecker
+import spacy
 
-spacy.load("en_core_web_sm")
+
+def install_spacy_model(model_name):
+    try:
+        spacy.load(model_name)
+    except OSError:
+        print(f"{model_name} model not found. Installing...")
+        subprocess.check_call([sys.executable, "-m", "spacy", "download", model_name])
+
 
 class DataProcessor:
 
@@ -75,8 +83,10 @@ class DataProcessor:
 
 
 class IntentRecogniser:
-    def __init__(self, genres):
+    def __init__(self, genres, model_name):
         self.genres = genres
+        self.model_name = model_name
+        self.nlp = spacy.load(self.model_name)
 
     def classify_intent(self, preprocessed_tokens):
         for token in preprocessed_tokens:
@@ -125,8 +135,11 @@ class CLIHandler:
 
 
 def main():
+    SPACY_MODEL_NAME = "en_core_web_sm"
+    install_spacy_model(SPACY_MODEL_NAME)
+
     GENRES = DataProcessor.load_data_from_json("data/genres.json")
-    intent_recognizer = IntentRecogniser(GENRES)
+    intent_recognizer = IntentRecogniser(GENRES, SPACY_MODEL_NAME)
     cli = CLIHandler(intent_recognizer)
     cli.run()
 
