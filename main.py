@@ -52,7 +52,7 @@ class DataProcessor:
         return DataProcessor.lemmatize_tokens(tokens)
 
 
-class IntentRecognizer:
+class IntentRecogniser:
     def __init__(self, genres):
         self.genres = genres
         self.nlp = spacy.load("en_core_web_sm")
@@ -78,15 +78,36 @@ class IntentRecognizer:
         return intent, details
 
 
+class CLIHandler:
+    def __init__(self, intent_recogniser):
+        self.intent_recogniser = intent_recogniser
+
+    def display_welcome_message(self):
+        print("Welcome to Book-Buddy. Please enter your query. ")
+
+    def get_user_input(self):
+        return input("Your query: ")
+
+    def display_intent_and_details(self, intent, details):
+        print(f"Identified Intent: {intent}")
+        print(f"Details (Genres): {details}")
+
+    def run(self):
+        self.display_welcome_message()
+        try:
+            while True:
+                user_input = self.get_user_input()
+                intent, details = self.intent_recogniser.extract_intent(user_input)
+                self.display_intent_and_details(intent, details)
+        except KeyboardInterrupt:
+            print("\nExiting Book-Buddy. Goodbye!")
+
+
 def main():
     genres = DataProcessor.load_data_from_json("data/genres.json")
-    intent_recognizer = IntentRecognizer(genres)
-
-    input_string = "I'm looking for a sci-fi book with elements of romance and comedy."
-    identified_intent, details = intent_recognizer.extract_intent(input_string)
-
-    print(f"Identified Intent: {identified_intent}")
-    print(f"Details (Genres): {details}")
+    intent_recognizer = IntentRecogniser(genres)
+    cli_handler = CLIHandler(intent_recognizer)
+    cli_handler.run()
 
 
 if __name__ == "__main__":
