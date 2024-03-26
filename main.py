@@ -3,10 +3,15 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from nltk.tokenize import word_tokenize
 import spacy
+import spacy.cli
+spacy.cli.download("en_core_web_lg")
 import contractions
+from spellchecker import SpellChecker
 
+spacy.load("en_core_web_sm")
 
 class DataProcessor:
+
     @staticmethod
     def load_data_from_json(json_file):
         with open(json_file, "r", encoding="utf-8") as file:
@@ -30,6 +35,14 @@ class DataProcessor:
     @staticmethod
     def tokenize_text(text):
         return word_tokenize(text)
+
+    @staticmethod
+    def check_spelling(tokens):
+        spell = SpellChecker()
+        corrected_tokens = []
+        for token in tokens:
+            corrected_tokens.append(spell.correction(token))
+        return corrected_tokens
 
     @staticmethod
     def remove_stop_words(tokens):
@@ -56,6 +69,7 @@ class DataProcessor:
         text = DataProcessor.strip_punctuation(text)
         text = DataProcessor.normalise_case(text)
         tokens = DataProcessor.tokenize_text(text)
+        tokens = DataProcessor.check_spelling(tokens)
         tokens = DataProcessor.remove_stop_words(tokens)
         return DataProcessor.lemmatize_tokens(tokens)
 
@@ -63,7 +77,6 @@ class DataProcessor:
 class IntentRecogniser:
     def __init__(self, genres):
         self.genres = genres
-        self.nlp = spacy.load("en_core_web_sm")
 
     def classify_intent(self, preprocessed_tokens):
         for token in preprocessed_tokens:
@@ -114,7 +127,7 @@ class CLIHandler:
 def main():
     GENRES = DataProcessor.load_data_from_json("data/genres.json")
     intent_recognizer = IntentRecogniser(GENRES)
-    cli= CLIHandler(intent_recognizer)
+    cli = CLIHandler(intent_recognizer)
     cli.run()
 
 
