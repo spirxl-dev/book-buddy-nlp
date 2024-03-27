@@ -19,7 +19,6 @@ def install_spacy_model(model_name):
 
 
 class DataProcessor:
-
     @staticmethod
     def load_data_from_json(json_file):
         with open(json_file, "r", encoding="utf-8") as file:
@@ -45,6 +44,7 @@ class DataProcessor:
         return word_tokenize(text)
 
     @staticmethod
+    # THIS IS THE CULPRIT!!!!
     def check_spelling(tokens):
         spell = SpellChecker()
         corrected_tokens = []
@@ -73,39 +73,75 @@ class DataProcessor:
 
     @staticmethod
     def process_text(text):
+        print("[INFO] Raw Text: ", text)
+
         text = DataProcessor.expand_contractions(text)
+        print("[INFO] Expanded Contractions: ", text)
+
         text = DataProcessor.strip_punctuation(text)
+        print("[INFO] Stripped Punctuation: ", text)
+
         text = DataProcessor.normalise_case(text)
+        print("[INFO] Normalised case: ", text)
+
         tokens = DataProcessor.tokenize_text(text)
+        print("[INFO] Tokenized: ", tokens)
+
         tokens = DataProcessor.check_spelling(tokens)
+        print("[INFO] Spelling checked: ", tokens)
+
         tokens = DataProcessor.remove_stop_words(tokens)
-        return DataProcessor.lemmatize_tokens(tokens)
+        print("[INFO] Stop words removed: ", tokens)
+
+        tokens = DataProcessor.lemmatize_tokens(tokens)
+        print("[INFO] Tokens lemmatized ", tokens)
+        return tokens
 
 
 class IntentRecogniser:
-    def __init__(self, genres, model_name):
+    def __init__(self, genres, authors, model_name):
         self.genres = genres
+        self.authors = authors
         self.model_name = model_name
         self.nlp = spacy.load(self.model_name)
 
-    def classify_intent(self, preprocessed_tokens):
+    def classify_intent(self, preprocessed_tokens, named_entities=None):
         for token in preprocessed_tokens:
             if token in self.genres:
                 return "genre_recommendation"
+        if named_entities:
+            for entity in named_entities:
+                if entity[1] in {"PERSON", "ORG"}:
+                    return "author_query"
         return "unknown"
 
-    def extract_details(self, preprocessed_tokens, detail_type="genres"):
+    def extract_details(
+        self, preprocessed_tokens, named_entities=None, detail_type="genres"
+    ):
         details = set()
         if detail_type == "genres":
             for token in preprocessed_tokens:
                 if token in self.genres:
                     details.add(token)
+        if named_entities and detail_type == "author":
+            for entity in named_entities:
+                if entity[1] == "PERSON":
+                    details.add(entity[0])
         return details
+
+    def extract_entities(self, text):
+        doc = self.nlp(text)
+        entities = []
+        for ent in doc.ents:
+            entities.append((ent.text, ent.label_))
+        return entities
 
     def extract_intent(self, input_string):
         preprocessed_tokens = DataProcessor.process_text(input_string)
-        intent = self.classify_intent(preprocessed_tokens)
-        details = self.extract_details(preprocessed_tokens, detail_type="genres")
+        named_entities = self.extract_entities(input_string)
+        intent = self.classify_intent(preprocessed_tokens, named_entities)
+        detail_type = "genres" if intent == "genre_recommendation" else "author"
+        details = self.extract_details(preprocessed_tokens, named_entities, detail_type)
         return intent, details
 
 
@@ -136,10 +172,15 @@ class CLIHandler:
 
 def main():
     SPACY_MODEL_NAME = "en_core_web_sm"
+    GENRES = DataProcessor.load_data_from_json("data/genres.json")
+    AUTHORS = DataProcessor.load_data_from_json("data/authors.json")
+
     install_spacy_model(SPACY_MODEL_NAME)
 
-    GENRES = DataProcessor.load_data_from_json("data/genres.json")
-    intent_recognizer = IntentRecogniser(GENRES, SPACY_MODEL_NAME)
+    intent_recognizer = IntentRecogniser(
+        genres=GENRES, authors=AUTHORS, model_name=SPACY_MODEL_NAME
+    )
+
     cli = CLIHandler(intent_recognizer)
     cli.run()
 
