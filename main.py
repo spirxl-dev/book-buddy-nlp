@@ -19,6 +19,7 @@ def install_spacy_model(model_name):
 
 
 class DataProcessor:
+
     @staticmethod
     def load_data_from_json(json_file):
         with open(json_file, "r", encoding="utf-8") as file:
@@ -64,12 +65,12 @@ class DataProcessor:
 
     @staticmethod
     def lemmatize_tokens(tokens):
-        lemmatizer = WordNetLemmatizer()
-        result = []
-        for token in tokens:
-            lemmatized_token = lemmatizer.lemmatize(token)
-            result.append(lemmatized_token)
-        return result
+        nlp = spacy.load("en_core_web_sm")
+        doc = nlp(" ".join(tokens))
+        lemmatized_tokens = []
+        for token in doc:
+            lemmatized_tokens.append(token.lemma_)
+        return lemmatized_tokens
 
     @staticmethod
     def process_text(text):
@@ -145,7 +146,7 @@ class IntentRecogniser:
         if intent == "genre_recommendation":
             detail_type = "genres"
         else:
-            detail_type ="author"
+            detail_type = "author"
         details = self.extract_details(preprocessed_tokens, named_entities, detail_type)
         return intent, details
 
