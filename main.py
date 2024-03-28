@@ -45,7 +45,6 @@ class DataProcessor:
         return word_tokenize(text)
 
     @staticmethod
-    # THIS IS THE CULPRIT!!!!
     def check_spelling(tokens):
         spell = SpellChecker()
         corrected_tokens = []
@@ -72,32 +71,30 @@ class DataProcessor:
             lemmatized_tokens.append(token.lemma_)
         return lemmatized_tokens
 
-    @staticmethod
-    def process_text(text):
+    @classmethod
+    def process_text(cls, text):
         print("[INFO] Raw Text: ", text)
 
-        text = DataProcessor.expand_contractions(text)
+        text = cls.expand_contractions(text)
         print("[INFO] Expanded Contractions: ", text)
 
-        text = DataProcessor.strip_punctuation(text)
+        text = cls.strip_punctuation(text)
         print("[INFO] Stripped Punctuation: ", text)
 
-        text = DataProcessor.normalise_case(text)
+        text = cls.normalise_case(text)
         print("[INFO] Normalised case: ", text)
 
-        tokens = DataProcessor.tokenize_text(text)
+        tokens = cls.tokenize_text(text)
         print("[INFO] Tokenized: ", tokens)
 
-        # ADD NAMED ENTITY RECOGNITION STEP HERE
-
-        tokens = DataProcessor.check_spelling(tokens)
+        tokens = cls.check_spelling(tokens)
         print("[INFO] Spelling checked: ", tokens)
 
-        tokens = DataProcessor.remove_stop_words(tokens)
+        tokens = cls.remove_stop_words(tokens)
         print("[INFO] Stop words removed: ", tokens)
 
-        tokens = DataProcessor.lemmatize_tokens(tokens)
-        print("[INFO] Tokens lemmatized ", tokens)
+        tokens = cls.lemmatize_tokens(tokens)
+        print("[INFO] Tokens lemmatized: ", tokens)
         return tokens
 
 
