@@ -87,6 +87,8 @@ class DataProcessor:
         tokens = DataProcessor.tokenize_text(text)
         print("[INFO] Tokenized: ", tokens)
 
+        # ADD NAMED ENTITY RECOGNITION STEP HERE
+
         tokens = DataProcessor.check_spelling(tokens)
         print("[INFO] Spelling checked: ", tokens)
 
@@ -140,7 +142,10 @@ class IntentRecogniser:
         preprocessed_tokens = DataProcessor.process_text(input_string)
         named_entities = self.extract_entities(input_string)
         intent = self.classify_intent(preprocessed_tokens, named_entities)
-        detail_type = "genres" if intent == "genre_recommendation" else "author"
+        if intent == "genre_recommendation":
+            detail_type = "genres"
+        else:
+            detail_type ="author"
         details = self.extract_details(preprocessed_tokens, named_entities, detail_type)
         return intent, details
 
