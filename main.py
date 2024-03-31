@@ -1,13 +1,13 @@
 import json
 import subprocess
 import sys
+from config import SPACY_MODEL_NAME
 
-from nltk.corpus import stopwords
-from nltk.stem import WordNetLemmatizer
-from nltk.tokenize import word_tokenize
-import contractions
-from spellchecker import SpellChecker
 import spacy
+import contractions
+from nltk.corpus import stopwords
+from nltk.tokenize import word_tokenize
+from spellchecker import SpellChecker
 
 
 def install_spacy_model(model_name):
@@ -19,7 +19,6 @@ def install_spacy_model(model_name):
 
 
 class DataProcessor:
-
     @staticmethod
     def load_data_from_json(json_file):
         with open(json_file, "r", encoding="utf-8") as file:
@@ -45,11 +44,33 @@ class DataProcessor:
         return word_tokenize(text)
 
     @staticmethod
-    def check_spelling(tokens):
+    def extract_named_entities(tokens, nlp):
+        doc = nlp(" ".join(tokens))
+        entities = set()
+        names = set()
+
+        for ent in doc.ents:
+            entities.add(ent.text)
+            if ent.label_ == "PERSON":
+                names.add(ent.text)
+
+        if names:
+            print("[INFO] Names identified: ", names)
+        else:
+            print("[INFO] No names identified.")
+
+        return entities
+
+    @staticmethod
+    def check_spelling(tokens, entities):
         spell = SpellChecker()
         corrected_tokens = []
         for token in tokens:
-            corrected_tokens.append(spell.correction(token))
+            if token not in entities:
+                corrected_token = spell.correction(token)
+                corrected_tokens.append(corrected_token if corrected_token else token)
+            else:
+                corrected_tokens.append(token)
         return corrected_tokens
 
     @staticmethod
@@ -63,8 +84,7 @@ class DataProcessor:
         return result
 
     @staticmethod
-    def lemmatize_tokens(tokens):
-        nlp = spacy.load("en_core_web_sm")
+    def lemmatize_tokens(tokens, nlp):
         doc = nlp(" ".join(tokens))
         lemmatized_tokens = []
         for token in doc:
@@ -72,7 +92,7 @@ class DataProcessor:
         return lemmatized_tokens
 
     @classmethod
-    def process_text(cls, text):
+    def process_text(cls, text, nlp):
         print("[INFO] Raw Text: ", text)
 
         text = cls.expand_contractions(text)
@@ -87,14 +107,18 @@ class DataProcessor:
         tokens = cls.tokenize_text(text)
         print("[INFO] Tokenized: ", tokens)
 
-        tokens = cls.check_spelling(tokens)
+        entities = cls.extract_named_entities(tokens, nlp)  # Use the passed nlp model
+        print("[INFO] Named Entities: ", entities)
+
+        tokens = cls.check_spelling(tokens, entities)
         print("[INFO] Spelling checked: ", tokens)
 
         tokens = cls.remove_stop_words(tokens)
         print("[INFO] Stop words removed: ", tokens)
 
-        tokens = cls.lemmatize_tokens(tokens)
+        tokens = cls.lemmatize_tokens(tokens, nlp)
         print("[INFO] Tokens lemmatized: ", tokens)
+
         return tokens
 
 
@@ -103,7 +127,7 @@ class IntentRecogniser:
         self.genres = genres
         self.authors = authors
         self.model_name = model_name
-        self.nlp = spacy.load(self.model_name)
+        self.nlp = spacy.load(model_name)
 
     def classify_intent(self, preprocessed_tokens, named_entities=None):
         for token in preprocessed_tokens:
@@ -137,7 +161,7 @@ class IntentRecogniser:
         return entities
 
     def extract_intent(self, input_string):
-        preprocessed_tokens = DataProcessor.process_text(input_string)
+        preprocessed_tokens = DataProcessor.process_text(input_string, self.nlp)
         named_entities = self.extract_entities(input_string)
         intent = self.classify_intent(preprocessed_tokens, named_entities)
         if intent == "genre_recommendation":
@@ -174,7 +198,6 @@ class CLIHandler:
 
 
 def main():
-    SPACY_MODEL_NAME = "en_core_web_sm"
     GENRES = DataProcessor.load_data_from_json("data/genres.json")
     AUTHORS = DataProcessor.load_data_from_json("data/authors.json")
 
