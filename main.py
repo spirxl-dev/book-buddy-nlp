@@ -55,22 +55,27 @@ class DataProcessor:
                 names.add(ent.text)
 
         if names:
-            print("[INFO] Names identified: ", names)
+            return entities
         else:
-            print("[INFO] No names identified.")
-
-        return entities
+            return "[INFO] No names identified."
 
     @staticmethod
     def check_spelling(tokens, entities):
         spell = SpellChecker()
         corrected_tokens = []
+
+        normalized_entities = set()
+        for entity in entities:
+            for word in entity.lower().split():
+                normalized_entities.add(word)
+
         for token in tokens:
-            if token not in entities:
+            if token.lower() not in normalized_entities:
                 corrected_token = spell.correction(token)
-                corrected_tokens.append(corrected_token if corrected_token else token)
+                corrected_tokens.append(corrected_token)
             else:
                 corrected_tokens.append(token)
+
         return corrected_tokens
 
     @staticmethod
@@ -107,7 +112,7 @@ class DataProcessor:
         tokens = cls.tokenize_text(text)
         print("[INFO] Tokenized: ", tokens)
 
-        entities = cls.extract_named_entities(tokens, nlp)  # Use the passed nlp model
+        entities = cls.extract_named_entities(tokens, nlp)
         print("[INFO] Named Entities: ", entities)
 
         tokens = cls.check_spelling(tokens, entities)
