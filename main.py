@@ -98,6 +98,7 @@ class DataProcessor:
 
     @classmethod
     def process_text(cls, text, nlp):
+        """ENTRY POINT"""
         print("\n[INFO] Raw Text: ", text)
 
         entities = cls.extract_named_entities(text, nlp)
@@ -173,8 +174,10 @@ class IntentRecogniser:
             detail_type = "genres"
         else:
             detail_type = "author"
+
         details = self.extract_details(preprocessed_tokens, named_entities, detail_type)
-        return intent, details
+
+        return named_entities, intent, details
 
 
 class CLIHandler:
@@ -187,8 +190,9 @@ class CLIHandler:
     def get_user_input(self):
         return input("\nYour query: ")
 
-    def display_intent_and_details(self, intent, details):
-        print(f"\nIdentified Intent: {intent}")
+    def display_extracted_info(self, named_entities, intent, details):
+        print(f"\nIdentified Named Entities: {named_entities}")
+        print(f"Identified Intent: {intent}")
         print(f"Details (Genres): {details}")
 
     def run(self):
@@ -196,8 +200,10 @@ class CLIHandler:
         try:
             while True:
                 user_input = self.get_user_input()
-                intent, details = self.intent_recogniser.extract_intent(user_input)
-                self.display_intent_and_details(intent, details)
+                named_entities, intent, details = self.intent_recogniser.extract_intent(
+                    user_input
+                )
+                self.display_extracted_info(named_entities, intent, details)
         except KeyboardInterrupt:
             print("\nExiting Book-Buddy. Goodbye!")
 
@@ -208,9 +214,7 @@ def main():
 
     install_spacy_model(SPACY_MODEL_NAME)
 
-    intent_recognizer = IntentRecogniser(
-        genres=GENRES, authors=AUTHORS, model_name=SPACY_MODEL_NAME
-    )
+    intent_recognizer = IntentRecogniser(GENRES, AUTHORS, SPACY_MODEL_NAME)
 
     cli = CLIHandler(intent_recognizer)
     cli.run()
