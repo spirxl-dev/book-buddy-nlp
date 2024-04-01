@@ -2,9 +2,6 @@ class CLIHandler:
     def __init__(self, intent_recogniser):
         self.intent_recogniser = intent_recogniser
 
-    def display_welcome_message(self):
-        print("\nWelcome to Book-Buddy. Please enter your query. ")
-
     def get_user_input(self):
         return input("\nYour query: ")
 
@@ -14,7 +11,7 @@ class CLIHandler:
         print(f"Details (Genres): {details}")
 
     def run(self):
-        self.display_welcome_message()
+        print("\nWelcome to Book-Buddy. Please enter your query. ")
         try:
             while True:
                 user_input = self.get_user_input()
