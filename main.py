@@ -44,8 +44,8 @@ class DataProcessor:
         return word_tokenize(text)
 
     @staticmethod
-    def extract_named_entities(tokens, nlp):
-        doc = nlp(" ".join(tokens))
+    def extract_named_entities(text, nlp):
+        doc = nlp(text)
         entities = set()
         names = set()
 
@@ -100,6 +100,9 @@ class DataProcessor:
     def process_text(cls, text, nlp):
         print("\n[INFO] Raw Text: ", text)
 
+        entities = cls.extract_named_entities(text, nlp)
+        print("[INFO] Named Entities: ", entities)
+
         text = cls.expand_contractions(text)
         print("[INFO] Expanded Contractions: ", text)
 
@@ -111,9 +114,6 @@ class DataProcessor:
 
         tokens = cls.tokenize_text(text)
         print("[INFO] Tokenized: ", tokens)
-
-        entities = cls.extract_named_entities(tokens, nlp)
-        print("[INFO] Named Entities: ", entities)
 
         tokens = cls.check_spelling(tokens, entities)
         print("[INFO] Spelling checked: ", tokens)
