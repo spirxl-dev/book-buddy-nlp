@@ -57,7 +57,7 @@ class DataProcessor:
         if names:
             return entities
         else:
-            return "[INFO] No names identified."
+            return ""
 
     @staticmethod
     def check_spelling(tokens, entities):
@@ -98,7 +98,7 @@ class DataProcessor:
 
     @classmethod
     def process_text(cls, text, nlp):
-        print("[INFO] Raw Text: ", text)
+        print("\n[INFO] Raw Text: ", text)
 
         text = cls.expand_contractions(text)
         print("[INFO] Expanded Contractions: ", text)
@@ -182,13 +182,13 @@ class CLIHandler:
         self.intent_recogniser = intent_recogniser
 
     def display_welcome_message(self):
-        print("Welcome to Book-Buddy. Please enter your query. ")
+        print("\nWelcome to Book-Buddy. Please enter your query. ")
 
     def get_user_input(self):
-        return input("Your query: ")
+        return input("\nYour query: ")
 
     def display_intent_and_details(self, intent, details):
-        print(f"Identified Intent: {intent}")
+        print(f"\nIdentified Intent: {intent}")
         print(f"Details (Genres): {details}")
 
     def run(self):
