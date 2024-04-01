@@ -135,7 +135,7 @@ class IntentRecogniser:
         self.model_name = model_name
         self.nlp = spacy.load(model_name)
 
-    def classify_intent(self, preprocessed_tokens, named_entities=None):
+    def determine_query_intent(self, preprocessed_tokens, named_entities=None):
         for token in preprocessed_tokens:
             if token in self.genres:
                 return "genre_recommendation"
@@ -145,7 +145,7 @@ class IntentRecogniser:
                     return "author_query"
         return "unknown"
 
-    def extract_details(
+    def extract_intent_details(
         self, preprocessed_tokens, named_entities=None, detail_type="genres"
     ):
         details = set()
@@ -169,13 +169,15 @@ class IntentRecogniser:
     def extract_intent(self, input_string):
         preprocessed_tokens = DataProcessor.process_text(input_string, self.nlp)
         named_entities = self.extract_entities(input_string)
-        intent = self.classify_intent(preprocessed_tokens, named_entities)
+        intent = self.determine_query_intent(preprocessed_tokens, named_entities)
         if intent == "genre_recommendation":
             detail_type = "genres"
         else:
             detail_type = "author"
 
-        details = self.extract_details(preprocessed_tokens, named_entities, detail_type)
+        details = self.extract_intent_details(
+            preprocessed_tokens, named_entities, detail_type
+        )
 
         return named_entities, intent, details
 
