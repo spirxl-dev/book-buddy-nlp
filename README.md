@@ -8,7 +8,7 @@
 - "I'm in the mood for psychological thrillers, any ideas?"
 - "What are some good contemporary romance books?"
 - "Can you list top-rated science fiction novels of the last decade?"
-- "I'd love to dive into some classic American literature. Recommendations?"
+- "I'd love to dive into some ~. Recommendations?"
 
 ### Author Queries
 - "Tell me more about books written by Haruki Murakami."
