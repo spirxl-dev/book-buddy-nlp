@@ -42,7 +42,9 @@ class IntentRecogniser:
 
     def extract_entities(self, text):
         doc = self.nlp(text)
-        entities = [(ent.text, ent.label_) for ent in doc.ents]
+        entities = []
+        for ent in doc.ents:
+            entities.append((ent.text, ent.label_))
         return entities
 
     def extract_intent(self, input_string):

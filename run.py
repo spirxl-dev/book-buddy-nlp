@@ -1,6 +1,5 @@
 from src.cli_handler import CLIHandler
 from src.intent_recogniser import IntentRecogniser
-from src.data_processer import DataProcessor
 from config import SPACY_MODEL_NAME
 from utils.utilities import install_spacy_model, load_json_data
 
