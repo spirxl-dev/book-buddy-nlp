@@ -11,7 +11,7 @@ def main():
     genres = load_json_data("data/genres.json")
     authors = load_json_data("data/authors.json")
 
-    intent_recognizer = IntentRecogniser(genres, authors, SPACY_MODEL_NAME)
+    intent_recognizer = IntentRecogniser(genres, SPACY_MODEL_NAME)
     cli_handler = CLIHandler(intent_recognizer)
 
     cli_handler.run()
