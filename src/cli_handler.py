@@ -20,4 +20,4 @@ class CLIHandler:
                 )
                 self.display_extracted_info(named_entities, intent, details)
         except KeyboardInterrupt:
-            print("\nExiting Book-Buddy. Goodbye!")
+            print("\nExiting Book-Buddy...")
