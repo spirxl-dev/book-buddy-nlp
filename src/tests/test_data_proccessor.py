@@ -37,37 +37,30 @@ def test_expand_contractions():
     }
 
     for contraction, expected in contractions.items():
-        assert DataProcessor.expand_contractions(contraction) == expected, f"Failed on contraction: {contraction}"
+        assert (
+            DataProcessor.expand_contractions(contraction) == expected
+        ), f"Failed on contraction: {contraction}"
 
 
-
-# def test_strip_punctuation():
-#     test_text = "Hello, world! This is great."
-#     expected_text = "Hello world This is great"
-#     assert DataProcessor.strip_punctuation(test_text) == expected_text
-
-
-# def test_normalise_case():
-#     test_text = "This Should Be Lowercase."
-#     expected_text = "this should be lowercase."
-#     assert DataProcessor.normalise_case(test_text) == expected_text
+def test_strip_punctuation():
+    test_text = "Hello, world! Whats Up?"
+    expected_text = "Hello world Whats Up"
+    assert DataProcessor.strip_punctuation(test_text) == expected_text
 
 
-# # Test for tokenize_text
-# def test_tokenize_text():
-#     test_text = "This is a test."
-#     expected_tokens = [
-#         "This",
-#         "is",
-#         "a",
-#         "test",
-#         ".",
-#     ]  # Adjust based on the tokenizer's specifics
-#     assert DataProcessor.tokenize_text(test_text) == expected_tokens
+def test_normalise_case():
+    test_text = "Lowercase Text"
+    expected_text = "lowercase text"
+    assert DataProcessor.normalise_case(test_text) == expected_text
 
 
-# def test_remove_stop_words():
-#     test_tokens = ["this", "is", "a", "test", "not", "a", "drill"]
-#     # Assuming "is", "a" are stop words, but we're keeping "not" as per the preserve_words set
-#     expected_result = ["this", "test", "not", "drill"]
-#     assert DataProcessor.remove_stop_words(test_tokens) == expected_result
+def test_tokenize_text():
+    test_text = "This is a test."
+    expected_tokens = [
+        "This",
+        "is",
+        "a",
+        "test",
+        ".",
+    ]
+    assert DataProcessor.tokenize_text(test_text) == expected_tokens
