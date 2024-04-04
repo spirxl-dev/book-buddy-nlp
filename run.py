@@ -8,7 +8,6 @@ def main():
     install_spacy_model(SPACY_MODEL_NAME)
 
     genres = load_json_data("data/genres.json")
-    authors = load_json_data("data/authors.json")
 
     intent_recognizer = IntentRecogniser(genres, SPACY_MODEL_NAME)
     cli_handler = CLIHandler(intent_recognizer)
