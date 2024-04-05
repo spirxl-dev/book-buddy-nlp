@@ -1,6 +1,6 @@
 # Book-Buddy-NLP
 
-`Book-Buddy-NLP` is a streamlined CLI application created using Python. It interprets natural language queries to provide personalized book suggestions. Leveraging NLP techniques, it parses user input to identify genres, authors, or themes, integrating with various book databases for relevant recommendations.
+`Book-Buddy-NLP` is a CLI application created using Python. It interprets natural language queries to provide personalised book suggestions. Leveraging NLP techniques, it parses user input to identify genres, authors, or themes, integrating with various book databases for relevant recommendations.
 
 
 ### Genre Recommendation Requests
@@ -25,9 +25,3 @@
 - "Find me a novel that's similar to 'The Alchemist' by Paulo Coelho."
 
 
-### General Inquiry and Feedback 
-- "How can I discover new authors in the mystery genre?"
-- "I wasn't a fan of the last fantasy recommendation. Can we try a different sub-genre?"
-- "I'm looking for a book for someone who loves both science and history. Any tips?"
-- "What's the best way to find emerging authors in speculative fiction?"
-- "I loved the recommendations last time. Can you suggest more books like those?"
