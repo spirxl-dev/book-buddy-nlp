@@ -1,5 +1,6 @@
 import spacy
 from src.data_processer import DataProcessor
+from pprint import pprint
 
 
 class IntentRecogniser:
@@ -47,7 +48,8 @@ class IntentRecogniser:
             entities.append((ent.text, ent.label_))
         return entities
 
-    def extract_intent(self, input_string):
+    def extract_intent(self, input_string) -> tuple[list, list, dict[str, set]]:
+        """ENTRY POINT"""
         preprocessed_tokens = DataProcessor.process_text(input_string, self.nlp)
         named_entities = self.extract_entities(input_string)
         intents = self.determine_query_intent(preprocessed_tokens, named_entities)
@@ -67,4 +69,7 @@ class IntentRecogniser:
                     )
                 )
 
-        return named_entities, intents, details
+        output = named_entities, intents, details
+        pprint(output)
+
+        return output
