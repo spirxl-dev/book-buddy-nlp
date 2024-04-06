@@ -12,29 +12,6 @@ class BookRecommender:
         self.db_connection = db_connection
         self.api_client = api_client
 
-    def recommend_books(self, named_entities, intents, details):
-        """
-        Recommends books based on the extracted named entities, intents, and details.
-
-        :param named_entities: A list of named entities.
-        :param intents: A list of intents.
-        :param details: A dictionary with detailed information (e.g., genres, authors).
-        :return: A list of recommended books.
-        """
-        if "genre_recommendation" in intents:
-            genres = details["genres"]
-            genre_recommendations = self.query_by_genres(genres)
-
-        if "author_query" in intents:
-            authors = details["authors"]
-            author_recommendations = self.query_by_authors(authors)
-
-        # Combine recommendations from both genres and authors, if applicable.
-        recommendations = self.combine_recommendations(
-            genre_recommendations, author_recommendations
-        )
-        return recommendations
-
     def query_by_genres(self, genres):
         """
         Query for book recommendations based on genres.
@@ -64,3 +41,24 @@ class BookRecommender:
         """
         combined = set(genre_recommendations + author_recommendations)
         return list(combined)
+
+    def recommend_books(self, named_entities, intents, details):
+        """
+        Recommends books based on the extracted named entities, intents, and details.
+
+        :param named_entities: A list of named entities.
+        :param intents: A list of intents.
+        :param details: A dictionary with detailed information (e.g., genres, authors).
+        :return: A list of recommended books.
+        """
+        if "genre_recommendation" in intents:
+            genres = details["genres"]
+            genre_recommendations = self.query_by_genres(genres)
+
+        if "author_query" in intents:
+            authors = details["authors"]
+            author_recommendations = self.query_by_authors(authors)
+
+        # Combine recommendations from both genres and authors, if applicable.
+        recommendations = self.combine_recommendations(genre_recommendations, author_recommendations)
+        return recommendations
