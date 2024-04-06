@@ -48,7 +48,7 @@ class IntentRecogniser:
             entities.append((ent.text, ent.label_))
         return entities
 
-    def extract_intent(self, input_string) -> tuple[list, list, dict[str, set]]:
+    def extract_intent(self, input_string):
         """ENTRY POINT"""
         preprocessed_tokens = DataProcessor.process_text(input_string, self.nlp)
         named_entities = self.extract_entities(input_string)
