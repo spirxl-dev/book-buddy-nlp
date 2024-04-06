@@ -60,5 +60,11 @@ class BookRecommender:
             author_recommendations = self.query_by_authors(authors)
 
         # Combine recommendations from both genres and authors, if applicable.
-        recommendations = self.combine_recommendations(genre_recommendations, author_recommendations)
+        recommendations = self.combine_recommendations(
+            genre_recommendations, author_recommendations
+        )
         return recommendations
+
+
+if __name__ == '__main__':
+    book_reccommendation = BookRecommender()
