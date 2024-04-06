@@ -1,7 +1,6 @@
 # Book-Buddy-NLP
 
-`Book-Buddy-NLP` is a CLI application created using Python. It interprets natural language queries to provide personalised book suggestions. Leveraging NLP techniques, it parses user input to identify genres, authors, or themes, integrating with various book databases for relevant recommendations.
-
+`Book-Buddy-NLP` is a CLI application created using Python. It interprets natural language queries to provide personalised book suggestions.
 
 ### Genre Recommendation Requests
 - "Suggest some epic fantasy series besides 'The Lord of the Rings'."

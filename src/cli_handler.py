@@ -11,6 +11,7 @@ class CLIHandler:
         print(f"Details (Genres): {details}")
 
     def run(self):
+        """ENTRY POINT"""
         print("\nWelcome to Book-Buddy. Please enter your query. ")
         try:
             while True:
