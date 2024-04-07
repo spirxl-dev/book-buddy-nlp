@@ -71,11 +71,3 @@ class BookRecommender:
 
 if __name__ == "__main__":
     book_reccommendation = BookRecommender()
-
-
-if __name__ == "__main__":
-    book_reccommendation = BookRecommender()
-
-
-if __name__ == '__main__':
-    book_reccommendation = BookRecommender()
