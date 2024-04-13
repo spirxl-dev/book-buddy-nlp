@@ -6,9 +6,9 @@ class CLIHandler:
         return input("\nYour query: ")
 
     def display_extracted_info(self, named_entities, intent, details):
-        print(f"\nIdentified Named Entities: {named_entities}")
-        print(f"Identified Intent: {intent}")
-        print(f"Details (Genres): {details}")
+        print(f"\n[RESULT] Identified Named Entities: {named_entities}")
+        print(f"[RESULT] Identified Intent: {intent}")
+        print(f"[RESULT] Output Dictionary: {details}")
 
     def run(self):
         """ENTRY POINT"""

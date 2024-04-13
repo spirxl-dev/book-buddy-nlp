@@ -70,6 +70,5 @@ class IntentRecogniser:
                 )
 
         output = named_entities, intents, details
-        pprint(output)
 
         return output
