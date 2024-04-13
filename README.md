@@ -22,5 +22,3 @@
 - "After reading 'Dune', I'm craving more epic space operas. Suggestions?"
 - "I want a book that mixes mystery with historical fiction, any ideas?"
 - "Find me a novel that's similar to 'The Alchemist' by Paulo Coelho."
-
-
