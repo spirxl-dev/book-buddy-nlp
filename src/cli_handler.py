@@ -16,7 +16,7 @@ class CLIHandler:
         try:
             while True:
                 user_input = self.get_user_input()
-                named_entities, intent, details = self.intent_recogniser.extract_intent(
+                named_entities, intent, details = self.intent_recogniser.process_query(
                     user_input
                 )
                 self.display_extracted_info(named_entities, intent, details)
