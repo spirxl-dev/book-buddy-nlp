@@ -2,7 +2,7 @@ import requests
 from ..utils.utilities import save_json_data
 
 
-class GoogleBooksDataPopulator:
+class GoogleBooksAggregator:
     def __init__(self, api_key):
         self.api_key = api_key
         self.base_url = "https://www.googleapis.com/books/v1/volumes"

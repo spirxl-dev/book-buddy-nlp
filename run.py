@@ -2,7 +2,7 @@ import os
 from dotenv import load_dotenv
 from src.cli_handler import CLIHandler
 from src.intent_recogniser import IntentRecogniser
-from src.populators.google_books_populator import GoogleBooksDataPopulator
+from src.data_aggregators.google_books_aggregator import GoogleBooksAggregator
 from config import SPACY_MODEL_NAME
 from src.utils.utilities import install_spacy_model, load_json_data
 
@@ -18,9 +18,7 @@ def populate_data_store():
         query = "subject:" + genre
         genres_list.append(query)
 
-    populator = GoogleBooksDataPopulator(
-        api_key=os.getenv("GOOGLE_BOOKS_API_KEY")
-    )
+    populator = GoogleBooksAggregator(api_key=os.getenv("GOOGLE_BOOKS_API_KEY"))
     populator.populate_datastore(genres_list)
 
 
@@ -36,6 +34,6 @@ def main_run_cli():
 
 
 if __name__ == "__main__":
-    api_key=os.getenv("GOOGLE_BOOKS_API_KEY")
+    api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
     print(api_key)
     print(type(api_key))
