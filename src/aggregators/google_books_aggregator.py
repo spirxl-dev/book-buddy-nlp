@@ -1,5 +1,8 @@
 import requests
-from ..utils.utilities import save_json_data
+from ..utils.utilities import (
+    load_json_data,
+    save_json_data,
+)
 
 
 class GoogleBooksAggregator:
@@ -11,7 +14,7 @@ class GoogleBooksAggregator:
         params = {
             "key": self.api_key,
             "q": query,
-            "maxResults": 40,
+            "maxResults": 30,
         }
         response = requests.get(self.base_url, params=params)
         return response.json()
@@ -38,15 +41,36 @@ class GoogleBooksAggregator:
             authors.update(book["authors"])
         return books, authors
 
-    def populate_datastore(self, genre_queries):
-        all_books = []
-        all_authors = set()
+    def download_books_by_genre(self, genres_json_path) -> list:
+        genres = load_json_data(genres_json_path)
+        genre_queries = []
+        for genre in genres:
+            genre_queries.append("subject:" + genre)
 
+        all_books = []
         for query in genre_queries:
             response = self.fetch_books(query)
-            books, authors = self.transform_book_data(response.get("items", []))
+            books, _ = self.transform_book_data(response.get("items", []))
             all_books.extend(books)
-            all_authors.update(authors)
+        return all_books
 
-        save_json_data(all_books, "data/books.json")
-        save_json_data(list(all_authors), "data/authors.json")
+    def download_authors_by_genre(self, genres_json_path) -> set:
+        genres = load_json_data(genres_json_path)
+        genre_queries = []
+        for genre in genres:
+            genre_queries.append("subject:" + genre)
+
+        all_authors = set()
+        for query in genre_queries:
+            response = self.fetch_books(query)
+            _, authors = self.transform_book_data(response.get("items", []))
+            all_authors.update(authors)
+        return all_authors
+
+    def download_and_save_books(self, genres_path, output_path):
+        books = self.download_books_by_genre(genres_path)
+        save_json_data(books, output_path)
+
+    def download_and_save_authors(self, genres_path, output_path):
+        authors = self.download_authors_by_genre(genres_path)
+        save_json_data(list(authors), output_path)
