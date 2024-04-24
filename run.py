@@ -1,25 +1,19 @@
-import os
-from dotenv import load_dotenv
 from src.cli_handler import CLIHandler
 from src.intent_recogniser import IntentRecogniser
-from src.data_aggregators.google_books_aggregator import GoogleBooksAggregator
-from config import SPACY_MODEL_NAME
+from src.aggregators.google_books_aggregator import GoogleBooksAggregator
+from config import SPACY_MODEL_NAME, GOOGLE_BOOKS_API_KEY
 from src.utils.utilities import install_spacy_model, load_json_data
 
-example_output_1 = {"genres": set(), "authors": set()}
-example_output_2 = {"genres": {"science"}, "authors": {"isaac asimov"}}
-example_output_3 = {"genres": {"romance"}, "authors": {"jane austen"}}
 
+def main_aggregator():
 
-def populate_data_store():
-    genres = load_json_data("data/genres.json")
-    genres_list = []
-    for genre in genres:
-        query = "subject:" + genre
-        genres_list.append(query)
+    aggregator = GoogleBooksAggregator(
+        api_key=GOOGLE_BOOKS_API_KEY, genres_path="data/api_test_genres.json"
+    )
 
-    populator = GoogleBooksAggregator(api_key=os.getenv("GOOGLE_BOOKS_API_KEY"))
-    populator.populate_datastore(genres_list)
+    aggregator.download_and_save_books(output_path="data/6_books.json")
+
+    # aggregator.download_and_save_authors(output_path="data/5_authors.json")
 
 
 def main_run_cli():
@@ -34,6 +28,4 @@ def main_run_cli():
 
 
 if __name__ == "__main__":
-    api_key = os.getenv("GOOGLE_BOOKS_API_KEY")
-    print(api_key)
-    print(type(api_key))
+    main_aggregator()
