@@ -42,7 +42,7 @@ class GoogleBooksAggregator:
             books.append(book)
         return books
 
-    def download_books_by_genre(self) -> list:
+    def download_books(self) -> list:
         genre_queries = []
         for genre in self.genres:
             genre_queries.append("subject:" + genre)
@@ -55,5 +55,5 @@ class GoogleBooksAggregator:
         return all_books
 
     def download_and_save_books(self, output_path):
-        books = self.download_books_by_genre()
+        books = self.download_books()
         save_json_data(books, output_path)
