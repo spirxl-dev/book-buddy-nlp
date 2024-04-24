@@ -9,9 +9,7 @@ def main_aggregator():
 
     aggregator = GoogleBooksAggregator(api_key=GOOGLE_BOOKS_API_KEY)
 
-    aggregator.download_and_save_books(output_path="data/6_books.json")
-
-    # aggregator.download_and_save_authors(output_path="data/5_authors.json")
+    aggregator.download_and_save_books(output_path="data/1_books.json")
 
 
 def main_run_cli():
