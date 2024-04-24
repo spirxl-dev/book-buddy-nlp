@@ -7,9 +7,7 @@ from src.utils.utilities import install_spacy_model, load_json_data
 
 def main_aggregator():
 
-    aggregator = GoogleBooksAggregator(
-        api_key=GOOGLE_BOOKS_API_KEY, genres_path="data/api_test_genres.json"
-    )
+    aggregator = GoogleBooksAggregator(api_key=GOOGLE_BOOKS_API_KEY)
 
     aggregator.download_and_save_books(output_path="data/6_books.json")
 
