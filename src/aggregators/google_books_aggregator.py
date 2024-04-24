@@ -1,15 +1,16 @@
 import requests
 from ..utils.utilities import (
-    load_json_data,
-    save_json_data,
+    save_json_data
+
 )
+from config import GENRES
 
 
 class GoogleBooksAggregator:
     def __init__(self, api_key, genres_path):
         self.api_key = api_key
         self.base_url = "https://www.googleapis.com/books/v1/volumes"
-        self.genres = load_json_data(genres_path)
+        self.genres = GENRES
 
     def fetch_books(self, query):
         params = {
