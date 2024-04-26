@@ -57,14 +57,14 @@ def test_transform_book_data(aggregator, sample_api_response):
     transformed = aggregator.transform_book_data(sample_api_response["items"])
     expected = [
         {
-            "title": "Example Book",
-            "authors": ["Author One"],
+            "title": "example book",
+            "authors": ["author one"],
             "publishedDate": "2021",
-            "publisher": "Example Publisher",
+            "publisher": "example publisher",
             "pageCount": 123,
             "isbn": "9781234567890",
-            "genres": ["Fiction"],
-            "maturityRating": "MATURE",
+            "genres": ["fiction"],
+            "maturityRating": "mature",
             "isPublicDomain": False,
         }
     ]

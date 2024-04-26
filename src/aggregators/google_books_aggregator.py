@@ -28,15 +28,29 @@ class GoogleBooksAggregator:
                     isbn_13 = identifier["identifier"]
                     break
 
+            title = volume_info.get("title", "").lower()
+
+            authors = []
+            for author in volume_info.get("authors", []):
+                authors.append(author.lower())
+
+            publisher = volume_info.get("publisher", "Not Available").lower()
+
+            genres = []
+            for genre in volume_info.get("categories", ["Unknown"]):
+                genres.append(genre.lower())
+
+            maturity_rating = volume_info.get("maturityRating", "Not Rated").lower()
+
             book = {
-                "title": volume_info.get("title"),
-                "authors": volume_info.get("authors", []),
+                "title": title,
+                "authors": authors,
                 "publishedDate": volume_info.get("publishedDate"),
-                "publisher": volume_info.get("publisher", "Not Available"),
+                "publisher": publisher,
                 "pageCount": volume_info.get("pageCount", "Unknown"),
                 "isbn": isbn_13,
-                "genres": volume_info.get("categories", ["Unknown"]),
-                "maturityRating": volume_info.get("maturityRating", "Not Rated"),
+                "genres": genres,
+                "maturityRating": maturity_rating,
                 "isPublicDomain": item.get("accessInfo", {}).get("publicDomain", False),
             }
             books.append(book)
