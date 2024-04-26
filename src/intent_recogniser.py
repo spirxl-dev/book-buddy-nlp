@@ -6,10 +6,10 @@ from pprint import pprint
 class IntentRecogniser:
     def __init__(self, genres, model_name):
         """
-        Initializes the IntentRecogniser with a set of genres and a spaCy model.
+        Initializes the IntentRecogniser with a list of genres and a spaCy model.
 
         Args:
-            genres (set): A set of genre names to be used for intent recognition.
+            genres (set): A list of genres to be used for intent recognition.
             model_name (str): The name of the spaCy model to load for processing.
         """
         self.genres = genres
