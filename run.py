@@ -1,24 +1,18 @@
 from src.intent_recogniser import IntentRecogniser
 from src.cli_handler import CLIHandler
 from src.ocr_handler import OpticalCharacterRecogniser
-from config import SPACY_MODEL_NAME
+from src.recommendation_engine import RecommendationEngine
+from config import SPACY_MODEL_NAME, GENRES
 from src.utils.utilities import install_spacy_model, load_json_data
-
-example_output_1 = {"genres": set(), "authors": set()}
-example_output_2 = {"genres": {"science"}, "authors": {"isaac asimov"}}
-example_output_3 = {"genres": {"romance"}, "authors": {"jane austen"}}
 
 
 def main_cli():
-    """
-    The main entry point for the CLI-based interaction.
-    This function installs the required spaCy model, loads genre data,
-    initializes the intent recognizer, and starts the CLI interaction.
-    """
     install_spacy_model(SPACY_MODEL_NAME)
-    genres = load_json_data("data/genres.json")
-    intent_recogniser = IntentRecogniser(genres, SPACY_MODEL_NAME)
-    cli_handler = CLIHandler(intent_recogniser)
+
+    intent_recogniser = IntentRecogniser(GENRES, SPACY_MODEL_NAME)
+    recommendation_engine = RecommendationEngine("data/books.json")
+
+    cli_handler = CLIHandler(intent_recogniser, recommendation_engine)
     cli_handler.run()
 
 
