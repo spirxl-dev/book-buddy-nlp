@@ -6,7 +6,7 @@ from config import SPACY_MODEL_NAME, GENRES
 from src.utils.utilities import install_spacy_model, load_json_data
 
 
-def main_cli():
+def main():
     install_spacy_model(SPACY_MODEL_NAME)
 
     intent_recogniser = IntentRecogniser(GENRES, SPACY_MODEL_NAME)
