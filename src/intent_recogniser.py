@@ -1,6 +1,5 @@
 import spacy
 from src.data_processer import DataProcessor
-from pprint import pprint
 
 
 class IntentRecogniser:
