@@ -17,18 +17,35 @@ def intent_recogniser():
 
 
 def test_identify_entities(mock_spacy_nlp):
-    mock_ent1 = MagicMock(text="Stephen King", label_="PERSON")
-    mock_ent2 = MagicMock(text="Science Fiction", label_="ORG")
-    mock_spacy_nlp.return_value.ents = [mock_ent1, mock_ent2]
+    mock_ent_person = MagicMock(text="Stephen King", label_="PERSON")
+    mock_ent_org = MagicMock(text="Science Fiction", label_="ORG")
+    mock_ent_work_of_art = MagicMock(text="Bible", label_="WORK_OF_ART")
+    mock_ent_date = MagicMock(text="21st September 1947", label_="DATE")
+    mock_ent_language = MagicMock(text="English", label_="LANGUAGE")
+
+    mock_spacy_nlp.return_value.ents = [
+        mock_ent_person,
+        mock_ent_org,
+        mock_ent_work_of_art,
+        mock_ent_date,
+        mock_ent_language,
+    ]
 
     recogniser = IntentRecogniser(
         genres=["fantasy", "sci-fi"], model_name="en_core_web_trf"
     )
     entities = recogniser.identify_entities(
-        "Stephen King writes Science Fiction books."
+        """Stephen King, born on the 21st September 1947, writes science fiction books and occasionally reads the Bible. 
+        He speaks English as his main language"""
     )
 
-    expected_entities = [("Stephen King", "PERSON"), ("Science Fiction", "ORG")]
+    expected_entities = [
+        ("Stephen King", "PERSON"),
+        ("Science Fiction", "ORG"),
+        ("Bible", "WORK_OF_ART"),
+        ("21st September 1947", "DATE"),
+        ("English", "LANGUAGE"),
+    ]
     assert entities == expected_entities
 
 
