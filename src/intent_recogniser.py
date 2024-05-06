@@ -55,6 +55,8 @@ class IntentRecogniser:
             intents.append("work_of_art_query")
         if "DATE" in entity_types:
             intents.append("date_query")
+        if "LANGUAGE" in entity_types:
+            intents.append("language_query")
 
         if not intents:
             intents.append("unknown")
@@ -90,6 +92,10 @@ class IntentRecogniser:
             for entity in entities:
                 if entity[1] == "DATE":
                     details.add(entity[0])
+        elif detail_type == "language":
+            for entity in entities:
+                if entity[1] == "LANGUAGE":
+                    details.add(entity[0])
         return details
 
     def process_query(self, input_string):
@@ -111,6 +117,7 @@ class IntentRecogniser:
             "authors": set(),
             "works_of_art": set(),
             "dates": set(),
+            "language": set(),
         }
         for intent in intents:
             if intent == "genre_recommendation":
@@ -128,6 +135,10 @@ class IntentRecogniser:
             elif intent == "date_query":
                 details["dates"].update(
                     self.extract_intent_details(tokens, entities, "date")
+                )
+            elif intent == "language_query":
+                details["language"].update(
+                    self.extract_intent_details(tokens, entities, "language")
                 )
 
         return entities, intents, details

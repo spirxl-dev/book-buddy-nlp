@@ -61,7 +61,7 @@ def test_determine_query_intent(intent_recogniser):
 
 
 def test_extract_intent_details_for_works_of_art(intent_recogniser):
-    preprocessed_tokens = [] 
+    preprocessed_tokens = []
     named_entities = [("The Dark Tower", "WORK_OF_ART")]
     details = intent_recogniser.extract_intent_details(
         preprocessed_tokens, named_entities, "work_of_art"
@@ -70,7 +70,7 @@ def test_extract_intent_details_for_works_of_art(intent_recogniser):
 
 
 def test_extract_intent_details_for_dates(intent_recogniser):
-    preprocessed_tokens = []  # Not relevant for this test
+    preprocessed_tokens = []
     named_entities = [("21st September 1947", "DATE")]
     details = intent_recogniser.extract_intent_details(
         preprocessed_tokens, named_entities, "date"
