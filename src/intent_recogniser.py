@@ -1,6 +1,5 @@
 import spacy
 from src.data_processer import DataProcessor
-from pprint import pprint
 
 
 class IntentRecogniser:
@@ -41,7 +40,7 @@ class IntentRecogniser:
             entities (list of tuple): Named entities identified from the user's input.
 
         Returns:
-            list of str: A list of identified intents such as 'genre_recommendation', 'author_query', or 'unknown'.
+            list of str: A list of identified intents such as 'genre_recommendation', 'author_query', 'work_of_art_query', 'date_query', or 'unknown'.
         """
         intents = []
         for token in tokens:
@@ -49,11 +48,15 @@ class IntentRecogniser:
                 intents.append("genre_recommendation")
                 break
 
-        if entities:
-            for entity in entities:
-                if entity[1] in {"PERSON", "ORG"}:
-                    intents.append("author_query")
-                    break
+        entity_types = {ent[1] for ent in entities}
+        if "PERSON" in entity_types or "ORG" in entity_types:
+            intents.append("author_query")
+        if "WORK_OF_ART" in entity_types:
+            intents.append("work_of_art_query")
+        if "DATE" in entity_types:
+            intents.append("date_query")
+        if "LANGUAGE" in entity_types:
+            intents.append("language_query")
 
         if not intents:
             intents.append("unknown")
@@ -67,7 +70,7 @@ class IntentRecogniser:
         Args:
             tokens (list of str): Preprocessed tokens from the user's input.
             entities (list of tuple): Named entities identified from the user's input.
-            detail_type (str): Type of detail to extract, either 'genres' or 'author'.
+            detail_type (str): Type of detail to extract, either 'genres', 'author', 'work_of_art', or 'date'.
 
         Returns:
             set: Details corresponding to the specified detail type.
@@ -77,9 +80,21 @@ class IntentRecogniser:
             for token in tokens:
                 if token in self.genres:
                     details.add(token)
-        elif detail_type == "author" and entities:
+        elif detail_type == "author":
             for entity in entities:
                 if entity[1] == "PERSON":
+                    details.add(entity[0])
+        elif detail_type == "work_of_art":
+            for entity in entities:
+                if entity[1] == "WORK_OF_ART":
+                    details.add(entity[0])
+        elif detail_type == "date":
+            for entity in entities:
+                if entity[1] == "DATE":
+                    details.add(entity[0])
+        elif detail_type == "language":
+            for entity in entities:
+                if entity[1] == "LANGUAGE":
                     details.add(entity[0])
         return details
 
@@ -97,7 +112,13 @@ class IntentRecogniser:
         entities = self.identify_entities(input_string)
         intents = self.get_query_intents(tokens, entities)
 
-        details = {"genres": set(), "authors": set()}
+        details = {
+            "genres": set(),
+            "authors": set(),
+            "works_of_art": set(),
+            "dates": set(),
+            "language": set(),
+        }
         for intent in intents:
             if intent == "genre_recommendation":
                 details["genres"].update(
@@ -106,6 +127,18 @@ class IntentRecogniser:
             elif intent == "author_query":
                 details["authors"].update(
                     self.extract_intent_details(tokens, entities, "author")
+                )
+            elif intent == "work_of_art_query":
+                details["works_of_art"].update(
+                    self.extract_intent_details(tokens, entities, "work_of_art")
+                )
+            elif intent == "date_query":
+                details["dates"].update(
+                    self.extract_intent_details(tokens, entities, "date")
+                )
+            elif intent == "language_query":
+                details["language"].update(
+                    self.extract_intent_details(tokens, entities, "language")
                 )
 
         return entities, intents, details
