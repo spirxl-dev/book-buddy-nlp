@@ -71,11 +71,3 @@ class GoogleBooksAggregator:
     def download_and_save_books(self, output_path):
         books = self.download_books()
         save_json_data(books, output_path)
-
-"""
-EXAMPLE USAGE:
-
-aggregator = GoogleBooksAggregator(api_key=GOOGLE_BOOKS_API_KEY)
-
-aggregator.download_and_save_books(output_path="data/books.json")
-"""
