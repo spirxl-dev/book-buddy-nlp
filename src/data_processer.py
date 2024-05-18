@@ -28,17 +28,14 @@ class DataProcessor:
     def extract_named_entities(text, nlp):
         doc = nlp(text)
         entities = set()
-        names = set()
 
         for ent in doc.ents:
             entities.add(ent.text)
-            if ent.label_ == "PERSON":
-                names.add(ent.text)
 
-        if names:
+        if entities:
             return entities
         else:
-            return ""
+            ""
 
     @staticmethod
     def check_spelling(tokens, entities):
