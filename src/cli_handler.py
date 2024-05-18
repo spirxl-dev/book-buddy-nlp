@@ -1,3 +1,6 @@
+import argparse
+
+
 class CLIHandler:
     def __init__(self, intent_recogniser, recommendation_engine):
         self.intent_recogniser = intent_recogniser
@@ -22,17 +25,30 @@ class CLIHandler:
             print("\nNo recommendations found based on your query.")
 
     def run(self):
-        """ENTRY POINT"""
-        print("\nWelcome to Book-Buddy. Please enter your query. ")
-        try:
-            while True:
-                user_input = self.get_user_input()
-                named_entities, intent, details = self.intent_recogniser.process_query(
-                    user_input
-                )
-                self.display_extracted_info(named_entities, intent, details)
+        parser = argparse.ArgumentParser(description="Handle CLI input for Book-Buddy.")
+        parser.add_argument(
+            "-query", "-q", type=str, help="Input query to process directly"
+        )
+        args = parser.parse_args()
 
-                recommendations = self.recommendation_engine.recommend(details)
-                self.display_recommendations(recommendations)
-        except KeyboardInterrupt:
-            print("\nExiting Book-Buddy...")
+        if args.query:
+            user_input = args.query
+            named_entities, intent, details = self.intent_recogniser.process_query(
+                user_input
+            )
+            self.display_extracted_info(named_entities, intent, details)
+            recommendations = self.recommendation_engine.recommend(details)
+            self.display_recommendations(recommendations)
+        else:
+            print("\nWelcome to Book-Buddy. Please enter your query.")
+            try:
+                while True:
+                    user_input = self.get_user_input()
+                    named_entities, intent, details = (
+                        self.intent_recogniser.process_query(user_input)
+                    )
+                    self.display_extracted_info(named_entities, intent, details)
+                    recommendations = self.recommendation_engine.recommend(details)
+                    self.display_recommendations(recommendations)
+            except KeyboardInterrupt:
+                print("\nExiting Book-Buddy...")
