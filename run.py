@@ -6,10 +6,6 @@ from src.utils.utilities import install_spacy_model
 
 
 # TODO: Split books.json into seperate generes e.g fiction.json, romance.json
-# TODO: Add intent recognition for WORK_OF_ART.
-# TODO: Add intent recognition  for dates e.g 2008.
-# TODO: Add intent recoginition for date ranges.
-# TODO: Run mixed intent query tests in README.md
 # TODO: End-to-end integration testing?
 
 
