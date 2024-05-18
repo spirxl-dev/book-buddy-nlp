@@ -73,7 +73,7 @@ class IntentRecogniser:
             detail_type (str): Type of detail to extract, either 'genres', 'author', 'work_of_art', or 'date'.
 
         Returns:
-            set: Details corresponding to the specified detail type.
+            details (set): Details corresponding to the specified detail type.
         """
         details = set()
         if detail_type == "genres":
