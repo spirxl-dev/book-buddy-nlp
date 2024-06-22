@@ -9,8 +9,6 @@ from src.utils.utilities import install_spacy_model
 from api.routers import search
 
 
-
-
 def main():
     """Runs book buddy from the CLI"""
     install_spacy_model(SPACY_MODEL_NAME)
@@ -20,6 +18,7 @@ def main():
 
     cli_handler = CLIHandler(intent_recogniser, recommendation_engine)
     cli_handler.run()
+
 
 def create_app() -> FastAPI:
     install_spacy_model(SPACY_MODEL_NAME)
@@ -32,4 +31,4 @@ def create_app() -> FastAPI:
 app = create_app()
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=8000, reload=False)
+    uvicorn.run("run:app", host="localhost", port=8000, reload=False)
