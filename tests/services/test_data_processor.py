@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import MagicMock
-from src.data_processer import DataProcessor
+from src.services.data_processer import DataProcessor
 
 
 @pytest.fixture
@@ -12,7 +12,7 @@ def mock_nlp(mocker):
 
 @pytest.fixture
 def mock_spellchecker(mocker):
-    mocker.patch("src.data_processer.SpellChecker.correction", side_effect=lambda x: x)
+    mocker.patch("src.services.data_processer.SpellChecker.correction", side_effect=lambda x: x)
 
 
 def test_expand_contractions():

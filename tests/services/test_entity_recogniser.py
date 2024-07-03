@@ -1,7 +1,7 @@
 from pprint import pprint
 import pytest
 from unittest.mock import MagicMock
-from src.entity_recogniser import EntityRecogniser
+from src.services.entity_recogniser import EntityRecogniser
 
 
 @pytest.fixture
