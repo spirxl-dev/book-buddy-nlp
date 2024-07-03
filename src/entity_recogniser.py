@@ -15,9 +15,6 @@ class EntityRecogniser:
         return entities
 
     def return_entities(self, input_string):
-        """
-        ENTRY POINT: Processes input_string to extract all entities.
-        """
         entities = self.identify_entities(input_string)
         return  entities
 

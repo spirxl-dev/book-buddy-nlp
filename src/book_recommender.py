@@ -1,7 +1,7 @@
 from src.utils.utilities import load_json_data
 
 
-class RecommendationEngine:
+class BookRecommender:
     def __init__(self, json_file_path):
         self.books = load_json_data(json_file_path)
 
