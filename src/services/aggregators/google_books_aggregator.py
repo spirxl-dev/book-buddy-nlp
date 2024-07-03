@@ -1,6 +1,6 @@
 import requests
 from ..utils.utilities import save_json_data
-from config import GENRES
+from src.config import GENRES
 
 
 class GoogleBooksAggregator:

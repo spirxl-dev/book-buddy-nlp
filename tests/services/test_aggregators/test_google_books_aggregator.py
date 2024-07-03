@@ -1,6 +1,6 @@
 import pytest
 from unittest.mock import patch, MagicMock
-from src.aggregators.google_books_aggregator import GoogleBooksAggregator
+from src.services.aggregators.google_books_aggregator import GoogleBooksAggregator
 
 
 @pytest.fixture
@@ -71,9 +71,9 @@ def test_transform_book_data(aggregator, sample_api_response):
     assert transformed == expected
 
 
-@patch("src.aggregators.google_books_aggregator.GoogleBooksAggregator.fetch_books")
+@patch("src.services.aggregators.google_books_aggregator.GoogleBooksAggregator.fetch_books")
 @patch(
-    "src.aggregators.google_books_aggregator.GoogleBooksAggregator.transform_book_data"
+    "src.services.aggregators.google_books_aggregator.GoogleBooksAggregator.transform_book_data"
 )
 def test_download_books(mock_transform, mock_fetch, aggregator, sample_api_response):
     mock_fetch.return_value = sample_api_response
@@ -84,9 +84,9 @@ def test_download_books(mock_transform, mock_fetch, aggregator, sample_api_respo
     assert mock_transform.call_count == len(aggregator.genres)
 
 
-@patch("src.aggregators.google_books_aggregator.GoogleBooksAggregator.download_books")
+@patch("src.services.aggregators.google_books_aggregator.GoogleBooksAggregator.download_books")
 @patch("builtins.open", new_callable=MagicMock)
-@patch("src.aggregators.google_books_aggregator.save_json_data")
+@patch("src.services.aggregators.google_books_aggregator.save_json_data")
 def test_download_and_save_books_non_empty(
     mock_save_json_data, mock_open, mock_download_books, aggregator
 ):
@@ -100,9 +100,9 @@ def test_download_and_save_books_non_empty(
     mock_save_json_data.assert_called_once_with(mock_books, output_path)
 
 
-@patch("src.aggregators.google_books_aggregator.GoogleBooksAggregator.download_books")
+@patch("src.services.aggregators.google_books_aggregator.GoogleBooksAggregator.download_books")
 @patch("builtins.open", new_callable=MagicMock)
-@patch("src.aggregators.google_books_aggregator.save_json_data")
+@patch("src.services.aggregators.google_books_aggregator.save_json_data")
 def test_download_and_save_books_empty(
     mock_save_json_data, mock_download_books, aggregator
 ):
