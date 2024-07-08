@@ -7,7 +7,7 @@ class EntitiesQueryResponse(BaseModel):
 
 
 class IntentsQueryResponse(BaseModel):
-    intents: List[str]
+    intents: List[Any]
 
 
 class DetailsQueryResponse(BaseModel):

@@ -5,7 +5,7 @@ class BookRecommender:
     def __init__(self, json_file_path):
         self.books = load_json_data(json_file_path)
 
-    def recommend(self, preferences):
+    def recommend(self, preferences) -> list:
         recommended_books: list = []
         genre_preferences = preferences.get("genres", set())
         author_preferences = preferences.get("authors", set())

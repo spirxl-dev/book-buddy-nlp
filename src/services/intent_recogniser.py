@@ -1,27 +1,26 @@
-from pprint import pprint
-
 class IntentRecogniser:
 
-    def get_query_intents(self, tokens, entities) -> list:
-        intents = []
-        for token in tokens:
-            if token in self.genres:
-                intents.append("genre_recommendation")
+    def get_query_intents(self, genres, entities) -> list:
+        self.genres = genres
+        self.intents = []
+
+        entity_types = {ent["type"] for ent in entities}
+
+        for entity in entities:
+            if entity["entity"].lower() in self.genres:
+                self.intents.append("genre_recommendation")
                 break
 
-        entity_types = {ent[1] for ent in entities}
         if "PERSON" in entity_types or "ORG" in entity_types:
-            intents.append("author_query")
+            self.intents.append("author_query")
         if "WORK_OF_ART" in entity_types:
-            intents.append("work_of_art_query")
+            self.intents.append("work_of_art_query")
         if "DATE" in entity_types:
-            intents.append("date_query")
+            self.intents.append("date_query")
         if "LANGUAGE" in entity_types:
-            intents.append("language_query")
+            self.intents.append("language_query")
 
-        if not intents:
-            intents.append("unknown")
+        if not self.intents:
+            self.intents.append("unknown")
 
-        pprint(intents)
-
-        return intents
+        return self.intents

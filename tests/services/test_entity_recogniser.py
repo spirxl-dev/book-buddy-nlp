@@ -1,4 +1,3 @@
-from pprint import pprint
 import pytest
 from unittest.mock import MagicMock
 from src.services.entity_recogniser import EntityRecogniser
@@ -46,5 +45,4 @@ def test_entities(mock_spacy_nlp):
         {"entity": "21st September 1947", "type": "DATE"},
         {"entity": "English", "type": "LANGUAGE"},
     ]
-    pprint(entities)
     assert entities == expected_entities
