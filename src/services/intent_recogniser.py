@@ -1,5 +1,8 @@
+from pprint import pprint
+
 class IntentRecogniser:
-    def get_query_intents(self, tokens, entities):
+
+    def get_query_intents(self, tokens, entities) -> list:
         intents = []
         for token in tokens:
             if token in self.genres:
@@ -18,5 +21,7 @@ class IntentRecogniser:
 
         if not intents:
             intents.append("unknown")
+
+        pprint(intents)
 
         return intents
