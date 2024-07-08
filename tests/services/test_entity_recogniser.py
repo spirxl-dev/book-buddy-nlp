@@ -34,7 +34,7 @@ def test_entities(mock_spacy_nlp):
     recogniser = EntityRecogniser(
         genres=["fantasy", "sci-fi"], model_name="en_core_web_trf"
     )
-    entities = recogniser.identify_entities(
+    entities = recogniser.return_entities(
         "Stephen King wrote The Dark Tower. He was born on 21st September 1947 and speaks English."
     )
 
