@@ -52,6 +52,14 @@ class GoogleBooksAggregator:
                 "genres": genres,
                 "maturityRating": maturity_rating,
                 "isPublicDomain": item.get("accessInfo", {}).get("publicDomain", False),
+                "description": volume_info.get(
+                    "description", "No description available."
+                ),
+                "language": volume_info.get("language", "unknown").lower(),
+                "averageRating": volume_info.get("averageRating", 0),
+                "ratingsCount": volume_info.get("ratingsCount", 0),
+                "previewLink": volume_info.get("previewLink", ""),
+                "thumbnail": volume_info.get("imageLinks", {}).get("thumbnail", ""),
             }
             books.append(book)
         return books
