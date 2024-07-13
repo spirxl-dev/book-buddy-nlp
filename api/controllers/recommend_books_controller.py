@@ -6,14 +6,18 @@ from src.services.entity_recogniser import EntityRecogniser
 from src.config import SPACY_MODEL_NAME, GENRES
 
 
-
-
 def recommend_books_logic(request: QueryRequest) -> BookRecommendationResponse:
 
     entity_recogniser = EntityRecogniser(GENRES, SPACY_MODEL_NAME)
-    entities = entity_recogniser.return_entities(request.input_string)
 
-    intents = IntentRecogniser().get_query_intents(entities=entities, genres=GENRES)
+    entities: list = entity_recogniser.return_entities(request.input_string)
+    intents: list = IntentRecogniser().get_query_intents(
+        entities=entities, genres=GENRES
+    )
+
+    recommender = BookRecommender(json_file_path="data/books.json")
+    book_recommendations = recommender.recommend(entities=entities, intents=intents)
     
-    book_recommender = BookRecommender(json_file_path="data/books.json")
-    return BookRecommendationResponse(intents=intents, entities=entities)
+    return BookRecommendationResponse(
+        intents=intents, entities=entities, book_recommendations=book_recommendations
+    )

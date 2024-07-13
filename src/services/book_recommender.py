@@ -5,17 +5,28 @@ class BookRecommender:
     def __init__(self, json_file_path):
         self.books = load_json_data(json_file_path)
 
-    def recommend(self, preferences) -> list:
+    def recommend(self, entities: list, intents: list) -> list:
+        genre_preferences = {
+            ent["entity"].lower() for ent in entities if ent["type"] == "GENRE"
+        }
+        author_preferences = {
+            ent["entity"].lower()
+            for ent in entities
+            if ent["type"] in ["PERSON", "ORG"]
+        }
+        works_of_art_preferences = {
+            ent["entity"].lower() for ent in entities if ent["type"] == "WORK_OF_ART"
+        }
+        dates_preferences = {ent["entity"] for ent in entities if ent["type"] == "DATE"}
+        language_preferences = {
+            ent["entity"].lower() for ent in entities if ent["type"] == "LANGUAGE"
+        }
+
         recommended_books: list = []
-        genre_preferences = preferences.get("genres", set())
-        author_preferences = preferences.get("authors", set())
-        works_of_art_preferences = preferences.get("works_of_art", set())
-        dates_preferences = preferences.get("dates", set())
-        language_preferences = preferences.get("language", set())
 
         for book in self.books:
             book_genres = set(book.get("genres", []))
-            book_authors = set(book.get("authors", []))
+            book_authors = {author.lower() for author in book.get("authors", [])}
             book_titles = {book.get("title", "").lower()}
             book_dates = {str(book.get("publishedDate", ""))}
             book_languages = {book.get("language", "").lower()}

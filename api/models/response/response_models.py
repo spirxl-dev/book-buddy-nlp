@@ -9,3 +9,4 @@ class EntitiesQueryResponse(BaseModel):
 class BookRecommendationResponse(BaseModel):
     intents: List[Any]
     entities: List[Any]
+    book_recommendations: List[Any]
