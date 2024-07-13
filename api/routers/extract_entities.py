@@ -1,6 +1,8 @@
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter
+
 from api.models.request.request_models import QueryRequest
 from api.models.response.response_models import EntitiesQueryResponse
+
 from api.controllers.extract_entities_controller import extract_entities_logic
 
 router = APIRouter()
