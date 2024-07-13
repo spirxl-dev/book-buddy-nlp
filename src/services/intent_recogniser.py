@@ -6,10 +6,10 @@ class IntentRecogniser:
 
         entity_types = {ent["type"] for ent in entities}
 
+        # Create a custom NER label called GENRE
         for entity in entities:
             if entity["entity"].lower() in self.genres:
                 self.intents.append("genre_recommendation")
-                break
 
         if "PERSON" in entity_types or "ORG" in entity_types:
             self.intents.append("author_query")

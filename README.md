@@ -47,3 +47,21 @@ Ensure you have Python 3 installed on your system. You can download it from [pyt
 5. **Access the API Documentation**
 
     Open your web browser and go to [http://localhost:8000/docs](http://localhost:8000/docs).
+
+6. **Testing the Application with Queries**
+
+    Open your web browser and go to [http://localhost:8000/docs](http://localhost:8000/docs). Navigate to the /recommend-books endpoint and send one of the following queries via "input_string".
+
+    ### Genre Queries
+    - "Suggest some epic fantasy series besides 'The Lord of the Rings'."
+    - "I'm in the mood for psychological thrillers, any ideas?"
+    - "What are some good contemporary romance books?"
+    - "Can you list top-rated science fiction novels of the last decade?"
+    - "I'd love to dive into some ~. Recommendations?"
+
+    ### Author Queries
+    - "Tell me more about books written by Haruki Murakami."
+    - "Which Margaret Atwood book should I start with?"
+    - "I'm interested in exploring Raymond Chandler's work. Any suggestions?"
+    - "List some children's books by Roald Dahl."
+    - "What are the most acclaimed novels by Toni Morrison?"
