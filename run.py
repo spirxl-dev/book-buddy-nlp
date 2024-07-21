@@ -21,15 +21,7 @@ def main():
     cli_handler = CLIHandler(intent_recogniser, recommendation_engine)
     cli_handler.run()
 
-def create_app() -> FastAPI:
-    install_spacy_model(SPACY_MODEL_NAME)
 
-    app = FastAPI()
-    app.include_router(search.router)
-    return app
-
-
-app = create_app()
 
 if __name__ == "__main__":
-    uvicorn.run("main:app", host="localhost", port=8000, reload=False)
+    main()
